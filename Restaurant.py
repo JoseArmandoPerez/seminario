@@ -1,28 +1,42 @@
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk
 
 class RestauranteApp:
     def __init__(self, master):
         self.master = master
-        master.title("Restaurante")
+        master.title("Ramen & Roll")
         master.attributes('-fullscreen', True)  # Abre la ventana principal en pantalla completa
 
-        # Configurar imagen de fondo
-        self.background_image = tk.PhotoImage(file="background_image.png")
-        self.background_label = tk.Label(master, image=self.background_image)
-        self.background_label.place(relwidth=1, relheight=1)
+        # Cargar la imagen de fondo y ajustar su brillo
+        self.bg_image = Image.open("imagenes/background_image.png")  # Reemplaza "background_image.png" con tu imagen de fondo
+        self.bg_image = self.bg_image.point(lambda p: p * 0.5)  # Reducir el brillo de la imagen
+        self.bg_image = ImageTk.PhotoImage(self.bg_image)
+        self.bg_label = tk.Label(master, image=self.bg_image)
+        self.bg_label.place(relwidth=1, relheight=1)
 
-        # Configurar menú emergente
-        self.menu = tk.Menu(master, tearoff=0)
-        self.menu.add_command(label="Acerca de nosotros", command=self.open_about_window)
-        self.menu.add_command(label="Mesas disponibles", command=self.open_tables_window)
-        self.menu.add_command(label="Recomendaciones", command=self.show_recommendations)
-        self.menu.add_command(label="Salir", command=self.close_app)
+        # Mostrar el nombre del restaurante centrado
+        self.restaurant_label = tk.Label(master, text="Ramen & Roll", font=("Helvetica", 36, "bold"), fg="white", bg="black")
+        self.restaurant_label.place(relx=0.5, rely=0.5, anchor="center")  # Centrar el texto en ambos ejes
 
-        master.bind("<Button-1>", self.show_menu)  # Asociar evento de clic a la función show_menu
+        master.bind("<Button-1>", self.move_text_up)  # Asociar evento de clic a la función move_text_up
 
-    def show_menu(self, event):
-        self.menu.post(event.x_root, event.y_root)  # Mostrar menú en la posición del clic
+    def move_text_up(self, event):
+        # Desplazar el texto hacia arriba
+        self.restaurant_label.place_configure(rely=0.1, anchor="n")  # Posicionar el texto en la parte superior de la ventana
+
+        # Crear botones de menú
+        about_button = tk.Button(self.master, text="Acerca de nosotros", font=("Helvetica", 24), command=self.open_about_window)
+        about_button.place(relx=0.5, rely=0.5, anchor="center")
+
+        tables_button = tk.Button(self.master, text="Mesas disponibles", font=("Helvetica", 24), command=self.open_tables_window)
+        tables_button.place(relx=0.5, rely=0.6, anchor="center")
+
+        recommendations_button = tk.Button(self.master, text="Recomendaciones", font=("Helvetica", 24), command=self.open_recommendations_window)
+        recommendations_button.place(relx=0.5, rely=0.7, anchor="center")
+
+        close_button = tk.Button(self.master, text="Salir", font=("Helvetica", 24), command=self.close_all_windows)
+        close_button.place(relx=0.5, rely=0.8, anchor="center")
 
     def open_about_window(self):
         about_window = tk.Toplevel(self.master)
@@ -46,15 +60,22 @@ class RestauranteApp:
     def open_tables_window(self):
         tables_window = tk.Toplevel(self.master)
         tables_window.title("Mesas Disponibles")
-        tables_window.attributes('-fullscreen', True)  # Abre la ventana de Mesas Disponibles en pantalla completa
+
+        # Aquí puedes mostrar información sobre las mesas disponibles
 
         close_button = tk.Button(tables_window, text="Cerrar", font=("Helvetica", 16), command=tables_window.destroy)
         close_button.pack(pady=10)
 
-    def show_recommendations(self):
-        messagebox.showinfo("Recomendaciones", "¡Prueba nuestro delicioso ramen especial!")
+    def open_recommendations_window(self):
+        recommendations_window = tk.Toplevel(self.master)
+        recommendations_window.title("Recomendaciones")
 
-    def close_app(self):
+        # Aquí puedes mostrar recomendaciones o platos especiales
+
+        close_button = tk.Button(recommendations_window, text="Cerrar", font=("Helvetica", 16), command=recommendations_window.destroy)
+        close_button.pack(pady=10)
+
+    def close_all_windows(self):
         self.master.destroy()
 
 def main():
