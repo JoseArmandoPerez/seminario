@@ -3,6 +3,8 @@ from recomendaciones import recomendaciones_ventana
 from acerca import acerca_ventana
 from mesas import mesas_ventana
 
+# prueba
+
 def salir():
     root.destroy()
     
