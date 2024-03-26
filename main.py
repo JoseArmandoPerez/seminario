@@ -2,6 +2,7 @@ import tkinter as tk
 from recomendaciones import recomendaciones_ventana
 from acerca import acerca_ventana
 from mesas import mesas_ventana
+from pedidos_ventana import pedidos_ventana
 
 def salir():
     root.destroy()
@@ -26,5 +27,8 @@ recommendations_button.place(relx=0.5, rely=0.7, anchor="center")
 
 close_button = tk.Button(root, text="Salir", font=("Helvetica", 24), command=salir, width=15)
 close_button.place(relx=0.5, rely=0.8, anchor="center")
+
+orders_button = tk.Button(root, text="Gestionar Pedidos", font=("Helvetica", 24), command=pedidos_ventana, width=15)
+orders_button.place(relx=0.5, rely=0.4, anchor="center")
 
 root.mainloop()
