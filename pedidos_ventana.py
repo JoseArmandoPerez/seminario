@@ -22,12 +22,12 @@ def generar_ticket(pedido_info):
     qr_img = qr.make_image(fill='black', back_color='white')
 
     # Crea una imagen para el ticket con el código QR
-    ticket = Image.new('RGB', (qr_img.width + 400, qr_img.height + 110), 'white')
+    ticket = Image.new('RGB', (qr_img.width + 500, qr_img.height + 300), 'white')
     draw = ImageDraw.Draw(ticket)
     font = ImageFont.load_default()
     draw.text((10, 10), 'Ticket Restaurante', fill='black', font=font)
     draw.text((10, 30), pedido_info, fill='black', font=font)
-    ticket.paste(qr_img, (10, 100))
+    ticket.paste(qr_img, (0, 200))
 
     # Guarda el ticket como imagen y lo muestra
     ticket_path = 'tickets/ticket.png'
