@@ -26,7 +26,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         restaurant_label = tk.Label(self, text="Ramen & Roll", font=("Helvetica", 36, "bold"), fg="white", bg="black")
         restaurant_label.place(relx=0.5, rely=0.1, anchor="center")
         
-        orders_button = tk.Button(self, text="Gestionar Pedidos", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
+        orders_button = tk.Button(self, text="Menu Bebidas", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
         orders_button.place(relx=0.5, rely=0.4, anchor="center")
 
         about_button = tk.Button(self, text="Acerca de nosotros", font=("Helvetica", 24), command=self.open_about_window, width=15)
