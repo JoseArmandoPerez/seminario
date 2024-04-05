@@ -5,6 +5,7 @@ from recomendaciones import recomendaciones_ventana
 from acerca import acerca_ventana
 from mesas import mesas_ventana
 from pedidos_bebidas import abrir_ventana_pedidos
+from pedidos_comida import abrir_ventana_pedidos_comida
 
 class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
     def __init__(self):
@@ -25,6 +26,9 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         # Nombre del restaurante
         restaurant_label = tk.Label(self, text="Ramen & Roll", font=("Helvetica", 36, "bold"), fg="white", bg="black")
         restaurant_label.place(relx=0.5, rely=0.1, anchor="center")
+        
+        orders_button2 = tk.Button(self, text="Menu Comida", font=("Helvetica", 24), command=self.open_menu_comida, width=15)
+        orders_button2.place(relx=0.5, rely=0.3, anchor="center")
         
         orders_button = tk.Button(self, text="Menu Bebidas", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
         orders_button.place(relx=0.5, rely=0.4, anchor="center")
@@ -52,6 +56,9 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         
     def open_menu_bebidas(self):
         abrir_ventana_pedidos()
+        
+    def open_menu_comida(self):
+        abrir_ventana_pedidos_comida()    
 
     def close_all_windows(self):
         self.destroy()
