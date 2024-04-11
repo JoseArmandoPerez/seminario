@@ -5,7 +5,7 @@ from recomendaciones import recomendaciones_ventana
 from acerca import acerca_ventana
 from mesas import mesas_ventana
 from pedidos_bebidas import abrir_ventana_pedidos
-from pedidos_comida import abrir_ventana_pedidos_comida
+from Registrar_comida import abrir_ventana_pedidos_comida
 
 class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
     def __init__(self):
