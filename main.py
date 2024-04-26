@@ -5,7 +5,7 @@ from recomendaciones import recomendaciones_ventana
 from acerca import acerca_ventana
 from mesas import mesas_ventana
 from pedidos_bebidas import abrir_ventana_pedidos
-from Registrar_comida import abrir_ventana_pedidos_comida
+from menu_comida import mostrar_menu
 from sesion import iniciar_sesion
 import requests
 
@@ -24,6 +24,13 @@ def check_server_status(url):
         servidor_activo = False
     
     return servidor_activo
+
+def main():
+    # Llamar a la función para mostrar el menú antes de iniciar la aplicación principal
+    mostrar_menu()
+
+    app = RestauranteApp()
+    app.mainloop()
 
 class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
     def __init__(self):
@@ -45,7 +52,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         restaurant_label = tk.Label(self, text="Ramen & Roll", font=("Helvetica", 36, "bold"), fg="white", bg="black")
         restaurant_label.place(relx=0.5, rely=0.1, anchor="center")
         
-        orders_button2 = tk.Button(self, text="Menu Comida", font=("Helvetica", 24), command=self.open_menu_comida, width=15)
+        orders_button2 = tk.Button(self, text="Menu Comida", font=("Helvetica", 24), command=mostrar_menu, width=15)
         orders_button2.place(relx=0.5, rely=0.3, anchor="center")
         
         orders_button = tk.Button(self, text="Menu Bebidas", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
@@ -89,7 +96,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         abrir_ventana_pedidos()
         
     def open_menu_comida(self):
-        abrir_ventana_pedidos_comida()    
+        mostrar_menu()    
 
     def sign_in(self):
         iniciar_sesion()
@@ -97,10 +104,5 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
     def close_all_windows(self):
         self.destroy()
 
-def main():
-    app = RestauranteApp()
-    app.mainloop()
-
 if __name__ == "__main__":
     main()
-
