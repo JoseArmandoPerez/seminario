@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
-import sqlite3
+import requests
+import json
 
 # Define las variables de entrada como globales
 name_entry = None
@@ -8,14 +9,19 @@ email_entry = None
 password_entry = None
 tipo_sesion = None
 
+def guardar_estado_usuario(usuario_iniciado, nombre_usuario, id_usuario):
+    with open('config.json', 'w') as f:
+        # Guarda el estado del usuario en un archivo JSON
+        json.dump({'usuario_iniciado': usuario_iniciado, 'nombre_usuario': nombre_usuario, 'id_usuario': id_usuario}, f)
+
 def iniciar_sesion():
     # Crea la ventana
     window = tk.Tk()
     window.title("Inicio de Sesión")
     sign_in(window)
 
+
 def sign_in(window):
-    
     # Marco para contener los widgets
     frame = tk.Frame(window, padx=10, pady=10)
     frame.pack()
@@ -33,28 +39,41 @@ def sign_in(window):
     password_entry.grid(row=1, column=1, padx=5, pady=5)
 
     # Botón de inicio de sesión
-    button = tk.Button(frame, text="Iniciar sesión", command=validate_credentials)
+    button = tk.Button(frame, text="Iniciar sesión", command=lambda: validate_credentials(email_entry, password_entry, window))
     button.grid(row=2, column=1, pady=5, padx=5)
-    
+
     # botón para crear una cuenta si no la tiene
     create_account_button = tk.Button(frame, text="Crear cuenta", command=lambda: sign_up(window))
     create_account_button.grid(row=3, column=1, pady=5, padx=5)
 
-def validate_credentials():
-    global email_entry, password_entry
+
+def validate_credentials(email_entry, password_entry, window):
     email = email_entry.get()
     password = password_entry.get()
     if email == "" or password == "":
         messagebox.showerror("Sign In", "Please enter email and password.")
         return
-    elif email == "admin" and password == "adm1n":
-        messagebox.showinfo("Sign In", "Welcome, Admin!")
-        tipo_sesion = "admin"
-        return "admin"
-    elif email == "juan@gmail.com" and password == "1234":
-        messagebox.showinfo("Sign In", "Welcome, User!")
-        tipo_sesion = "user"
-        return "user"
+    else:
+        data = {'email': email, 'password': password}
+        response = requests.post('http://192.168.100.89:5000/login', json=data)  # Define la variable `response` aquí
+    if response.status_code == 200:
+        # Obtenemos la información del usuario
+        datos_usuario = response.json()
+        id_usuario = datos_usuario["id"]
+        nombre = datos_usuario["nombre"]
+        tipo_sesion = datos_usuario["tipo_sesion"]
+
+        # Guardamos el estado del usuario
+        guardar_estado_usuario(True, nombre, id_usuario)
+
+        # Mostramos el mensaje de bienvenida
+        messagebox.showinfo("Sign In", f"Bienvenido, {nombre}! Tipo de sesión: {tipo_sesion}")
+        window.after(2000, window.destroy)
+        return
+    else:
+        # Mostramos un mensaje de error
+        messagebox.showerror("Error", "Correo electrónico o contraseña incorrectos.")
+        window.after(2000, window.destroy)
 
 def sign_up(window):
     global name_entry, email_entry, password_entry  # Declara las variables globales
@@ -95,20 +114,12 @@ def create_account(window):
     email = email_entry.get()
     password = password_entry.get()
 
-    # Guardar el usuario en una base de datos SQLite
-    # Conexión a la base de datos
-    conn = sqlite3.connect('mydatabase.db')
-    cursor = conn.cursor()
-
-    # Insertar el usuario en la base de datos
-    cursor.execute("INSERT INTO usuario (nombre, email, password) VALUES (?, ?, ?)", (name, email, password))
-
-    # Guardar los cambios y cerrar la conexión
-    conn.commit()
-    conn.close()
-    
-    # Mensaje de éxito
-    messagebox.showinfo("Create Account", "Account created successfully.")
+    data = {'nombre': name, 'email': email, 'password': password}
+    response = requests.post('http://192.168.100.89:5000/crear_usuario', json=data)
+    if response.status_code == 201:
+        messagebox.showinfo("Create Account", response.json()['message'])
+    else:
+        messagebox.showerror("Create Account", "Failed to create account.")
     
     # Cerrar la ventana (o realizar cualquier otra acción necesaria)
     window.destroy()
