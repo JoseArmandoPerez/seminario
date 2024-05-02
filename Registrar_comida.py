@@ -1,7 +1,5 @@
 import tkinter as tk
-from tkinter import simpledialog, messagebox
-from PIL import Image, ImageTk
-import qrcode
+from tkinter import ttk, simpledialog, messagebox
 
 # Lista de platos principales y sus ingredientes
 platos_principales = {
@@ -11,9 +9,37 @@ platos_principales = {
     'Gyudon': ['Ternera', 'Cebolla', 'Salsa de soja', 'Caldo dashi', 'Azúcar', 'Jengibre', 'Arroz'],
 }
 
-def abrir_ventana_ingredientes(plato):
+# Lista de platos de entradas y sus ingredientes
+platos_entradas ={
+    'Bruschetta': ['Pan baguette','Ajo','Albahaca fresca','Aceite de oliva virgen', 'Vinagre balsámico','Sal y pimienta al gusto','Tomates maduros'],
+    'Ensalada Caprese': ['Tomates maduros','Mozzarella fresca','Hojas de albahaca fresca','Aceite de oliva virgen', 'Vinagre balsámico','Sal y pimienta al gusto','Tomates maduros'],
+    'Queso fundido': ['Queso rallado: cheddar, mozzarella, mixto','Chorizo, champiñones','Tortillas de maíz o chips de tortilla para servir'],
+    'Sashimi': ['Pescado fresco: salmón, atún, hamachi (pez limón), vieira','Wasabi','Salsa de soja'],
+    'Yakitori': ['Pollo','Salsa Yakitori','Sake o mirin','Salsa de soja','Azúcar','Ajo','Jengibre rallado'],
+    'Nigiri sushi': ['Pescado','Arroz sushi','Wasabi','Salsa de soja','Azúcar','Jengibre encurtido']
+}
+
+# Lista de platos de postres y sus ingredientes
+platos_postres = {
+    'Tarta de queso': ['Queso crema','Azúcar','Huevos','Extracto de vainilla', 'Galletas para la base','Mantequilla'],
+    'Coulant de chocolate': ['Chocolate negro','Azúcar','Huevos','Mantequilla', 'Harina'],
+    'Crème brûlée': ['Crema de leche','Azúcar','Yemas de huevo','Vainilla'],
+    'Dorayaki': ['Harina de trigo','Azúcar','Miel','Huevos','Bicarbonato de sodio','Agua','Anko'],
+    'Mochi': ['Harina de arroz glutinoso','Azúcar','Agua','Rellenos: fresa, mango, té verde']
+}
+
+# Lista para almacenar los pedidos realizados
+pedidos = []
+
+def abrir_ventana_ingredientes(plato, tipo):
     ventana_ingredientes = tk.Toplevel()
     ventana_ingredientes.title(f"Ingredientes para {plato}")
+
+    platos = platos_principales
+    if tipo == "Entradas":
+        platos = platos_entradas
+    elif tipo == "Postres":
+        platos = platos_postres
     
     ingredientes_seleccionados = []
 
@@ -34,7 +60,7 @@ def abrir_ventana_ingredientes(plato):
     lista_ingredientes = tk.Listbox(ventana_ingredientes, selectmode=tk.MULTIPLE, font=("Helvetica", 12))
     lista_ingredientes.pack(fill=tk.BOTH, expand=True)
 
-    for ingrediente in platos_principales[plato]:
+    for ingrediente in platos[plato]:
         lista_ingredientes.insert(tk.END, ingrediente)
 
     def on_select(event):
@@ -58,17 +84,64 @@ def agregar_al_carrito(plato, ingredientes_seleccionados):
         mensaje += ", ".join(ingredientes_seleccionados)
     else:
         mensaje += "Ninguno"
+    pedidos.append(mensaje)
     messagebox.showinfo("Plato Agregado", mensaje)
+
+def ver_pedidos():
+    ventana_ver_pedidos = tk.Toplevel()
+    ventana_ver_pedidos.title("Lista de Pedidos")
+
+    if not pedidos:
+        label_vacio = tk.Label(ventana_ver_pedidos, text="No se han realizado pedidos aún.", font=("Helvetica", 14))
+        label_vacio.pack(padx=20, pady=20)
+    else:
+        for pedido in pedidos:
+            label_pedido = tk.Label(ventana_ver_pedidos, text=pedido, font=("Helvetica", 12))
+            label_pedido.pack(padx=20, pady=5)
+
+def limpiar_pedidos():
+    pedidos.clear()
+    messagebox.showinfo("Pedidos Limpiados", "La lista de pedidos ha sido limpiada.")
+
+def enviar_pedidos():
+    if not pedidos:
+        messagebox.showwarning("Sin Pedidos", "No hay pedidos para enviar.")
+    else:
+        # Aquí agregaría el código para enviar los pedidos, por ejemplo, a través de una API, correo electrónico, etc.
+        messagebox.showinfo("Pedidos Enviados", "Los pedidos han sido enviados correctamente.")
 
 def abrir_ventana_pedidos_comida():
     ventana_pedidos = tk.Toplevel()
     ventana_pedidos.title("Pedidos de Comida Japonesa")
-    
-    # Creación de los marcos y botones de platos
-    frame_platos_principales = tk.LabelFrame(ventana_pedidos, text="Platos Principales", font=("Helvetica", 16, "bold"))
-    frame_platos_principales.pack(fill="both", expand="yes", padx=20, pady=20)
+
+    # Creación de pestañas para platos principales, entradas y postres
+    notebook = ttk.Notebook(ventana_pedidos)
+    notebook.pack(fill=tk.BOTH, expand=True)
+
+    frame_platos_principales = tk.Frame(notebook)
+    frame_platos_entradas = tk.Frame(notebook)
+    frame_platos_postres = tk.Frame(notebook)
+
+    notebook.add(frame_platos_principales, text="Platos Principales")
+    notebook.add(frame_platos_entradas, text="Entradas")
+    notebook.add(frame_platos_postres, text="Postres")
+
+    # Botones de platos principales
     for plato in platos_principales.keys():
-        tk.Button(frame_platos_principales, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato), font=("Helvetica", 14), bg="blue", fg="white").pack(pady=5, padx=10)
+        tk.Button(frame_platos_principales, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Principales"), font=("Helvetica", 14), bg="blue", fg="white").pack(pady=5, padx=10)
+
+    # Botones de entradas
+    for plato in platos_entradas.keys():
+        tk.Button(frame_platos_entradas, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Entradas"), font=("Helvetica", 14), bg="green", fg="white").pack(pady=5, padx=10)
+
+    # Botones de postres
+    for plato in platos_postres.keys():
+        tk.Button(frame_platos_postres, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Postres"), font=("Helvetica", 14), bg="orange", fg="white").pack(pady=5, padx=10)
+
+    # Botones para ver resumen de pedidos y limpiar la lista
+    tk.Button(ventana_pedidos, text="Ver Pedidos", command=ver_pedidos, font=("Helvetica", 14), bg="gray", fg="white").pack(pady=10)
+    tk.Button(ventana_pedidos, text="Limpiar Pedidos", command=limpiar_pedidos, font=("Helvetica", 14), bg="red", fg="white").pack(pady=10)
+    tk.Button(ventana_pedidos, text="Enviar Pedidos", command=enviar_pedidos, font=("Helvetica", 14), bg="green", fg="white").pack(pady=10)
 
 def main():
     root = tk.Tk()

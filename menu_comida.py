@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk
 import os
 from Registrar_comida import abrir_ventana_pedidos_comida
@@ -26,24 +27,98 @@ platos_principales = {
     },
 }
 
+platos_entradas = {
+    'Bruschetta': {
+        'ingredientes': ['Pan baguette','Ajo','Albahaca fresca','Aceite de oliva virgen', 'Vinagre balsámico','Sal y pimienta al gusto','Tomates maduros'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Ensalada Caprese': {
+        'ingredientes': ['Tomates maduros','Mozzarella fresca','Hojas de albahaca fresca','Aceite de oliva virgen', 'Vinagre balsámico','Sal y pimienta al gusto','Tomates maduros'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Queso fundido': {
+        'ingredientes': ['Queso rallado: cheddar, mozzarella, mixto','Chorizo, champiñones','Tortillas de maíz o chips de tortilla para servir'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Sashimi': {
+        'ingredientes': ['Pescado fresco: salmón, atún, hamachi (pez limón), vieira','Wasabi','Salsa de soja'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Yakitori':{
+        'ingredientes': ['Pollo','Salsa Yakitori','Sake o mirin','Salsa de soja','Azúcar','Ajo','Jengibre rallado'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Nigiri sushi': {
+        'ingredientes': ['Pescado','Arroz sushi','Wasabi','Salsa de soja','Azúcar','Jengibre encurtido'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')        
+    }
+}
+
+platos_postres = {
+    'Tarta de queso': {
+        'ingredientes': ['Queso crema','Azúcar','Huevos','Extracto de vainilla', 'Galletas para la base','Mantequilla'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Coulant de chocolate': {
+        'ingredientes': ['Chocolate negro','Azúcar','Huevos','Mantequilla', 'Harina'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Crème brûlée': {
+        'ingredientes': ['Crema de leche','Azúcar','Yemas de huevo','Vainilla'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Dorayaki': {
+        'ingredientes': ['Harina de trigo','Azúcar','Miel','Huevos','Bicarbonato de sodio','Agua','Anko'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    },
+    'Mochi': {
+        'ingredientes': ['Harina de arroz glutinoso','Azúcar','Agua','Rellenos: fresa, mango, té verde'],
+        'imagen': os.path.join(carpeta, 'gyudon.jpg')
+    }
+    
+}
+
 def mostrar_menu():
-        root = tk.Tk()
-        root.title("Menú de Comida Japonesa")
-        root.attributes("-fullscreen", True)  # Abrir en pantalla completa
+    root = tk.Tk()
+    root.title("Menú de Comida Japonesa")
+    root.attributes("-fullscreen", True)  # Abrir en pantalla completa
 
-        # Definir colores
-        color_fondo = "#FFFAF0"  # Marfil claro
-        color_titulo = "#8B4513"  # Marrón oscuro
-        color_texto = "#000000"  # Negro
+    # Definir colores
+    color_fondo = "#FFFAF0"  # Marfil claro
+    color_titulo = "#8B4513"  # Marrón oscuro
+    color_texto = "#000000"  # Negro
 
-        frame_menu = tk.Frame(root, bg=color_fondo)
-        frame_menu.pack(fill="both", expand=True)
+    # Crear estilo para las pestañas
+    estilo = ttk.Style()
+    estilo.theme_create("EstiloPestanas", parent="alt", settings={
+        "TNotebook": {"configure": {"tabmargins": [2, 5, 2, 0]}},
+        "TNotebook.Tab": {
+            "configure": {"padding": [5, 1], "background": color_fondo},
+            "map": {"background": [("selected", color_fondo)],
+                    "foreground": [("selected", color_titulo)]}
+        }})
 
-        label_titulo = tk.Label(frame_menu, text="Menú de Comida Japonesa", font=("Helvetica", 24, "bold"), bg=color_fondo, fg=color_titulo)
-        label_titulo.pack(pady=(20,10))
+    estilo.theme_use("EstiloPestanas")
 
-        for plato, detalle in platos_principales.items():
-            frame_plato = tk.Frame(frame_menu, bg=color_fondo, bd=2, relief=tk.RAISED)
+    # Crear pestañas
+    notebook = ttk.Notebook(root)
+
+    # Página de platos principales
+    frame_principales = tk.Frame(notebook, bg=color_fondo)
+    notebook.add(frame_principales, text='Platos Principales')
+
+    # Página de platos de entradas
+    frame_entradas = tk.Frame(notebook, bg=color_fondo)
+    notebook.add(frame_entradas, text='Entradas')
+
+    # Página de platos de postres
+    frame_postres = tk.Frame(notebook, bg=color_fondo)
+    notebook.add(frame_postres, text='Postres')
+
+    # Función para crear los platos en cada página
+    def crear_platos(platos, frame):
+        for plato, detalle in platos.items():
+            frame_plato = tk.Frame(frame, bg=color_fondo, bd=2, relief=tk.RAISED)
             frame_plato.pack(anchor="w", fill="x", padx=20, pady=10)
 
             # Cargar imagen y ajustar tamaño si es necesario
@@ -61,11 +136,17 @@ def mostrar_menu():
             label_ingredientes = tk.Label(frame_plato, text=", ".join(detalle['ingredientes']), font=("Helvetica", 12), bg=color_fondo, fg=color_texto)
             label_ingredientes.pack(side="left", padx=(10, 0), pady=10)
 
-        # Botón para abrir Registrar_comida.py
-        button_registrar_comida = tk.Button(frame_menu, text="Registrar Comida", font=("Helvetica", 16), command=abrir_ventana_pedidos_comida)
-        button_registrar_comida.pack(side="bottom", pady=20)
+    # Crear platos en cada página
+    crear_platos(platos_principales, frame_principales)
+    crear_platos(platos_entradas, frame_entradas)
+    crear_platos(platos_postres, frame_postres)
 
-        root.mainloop()
-    
+    # Botón para abrir Registrar_comida.py
+    button_registrar_comida = tk.Button(root, text="Registrar Comida", font=("Helvetica", 16), command=abrir_ventana_pedidos_comida)
+    button_registrar_comida.pack(side="bottom", pady=20)
+
+    notebook.pack(fill='both', expand=True)
+    root.mainloop()
+
 if __name__ == "__main__":
     mostrar_menu()
