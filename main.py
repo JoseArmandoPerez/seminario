@@ -29,7 +29,7 @@ def check_server_status(url):
 
 def main():
     # Llamar a la función para mostrar el menú antes de iniciar la aplicación principal
-    mostrar_menu()
+    # mostrar_menu()
 
     app = RestauranteApp()
     app.mainloop()
@@ -84,7 +84,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         self.sign_in_button.place(relx=0.8, rely=0.1, anchor="center")
         
         # Llamar a la función para verificar si el servidor de http://192.168.100.89:5000/ está activo
-        servidor_esta_activo = check_server_status("http://192.168.100.89:5000")
+        servidor_esta_activo = check_server_status("http://100.72.9.175:5000")
         if servidor_esta_activo:
             print("El servidor está activo.")
             # Mostrar un texto en la ventana principal
