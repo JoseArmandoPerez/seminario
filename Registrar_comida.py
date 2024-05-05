@@ -51,6 +51,7 @@ def abrir_ventana_ingredientes(plato, tipo):
         if ingredientes_seleccionados:
             agregar_al_carrito(plato, ingredientes_seleccionados)
             ventana_ingredientes.destroy()
+            actualizar_contador()  # Actualizar contador de pedidos
         else:
             messagebox.showwarning("Sin Ingredientes", "Por favor, seleccione al menos un ingrediente.")
 
@@ -78,14 +79,35 @@ def abrir_ventana_ingredientes(plato, tipo):
     boton_agregar = tk.Button(ventana_ingredientes, text="Finalizar Selección", command=finalizar_seleccion, font=("Helvetica", 14, "bold"), bg="green", fg="white")
     boton_agregar.pack(pady=10)
 
-def agregar_al_carrito(plato, ingredientes_seleccionados):
-    mensaje = f"Plato: {plato}\nIngredientes: "
-    if ingredientes_seleccionados:
-        mensaje += ", ".join(ingredientes_seleccionados)
-    else:
-        mensaje += "Ninguno"
-    pedidos.append(mensaje)
-    messagebox.showinfo("Plato Agregado", mensaje)
+    # Funcionalidad del carrito
+    label_carrito = tk.Label(ventana_ingredientes, text="Carrito:", font=("Helvetica", 12, "bold"))
+    label_carrito.pack(pady=10)
+
+    def agregar_al_carrito(plato, ingredientes_seleccionados):
+        mensaje = f"Plato: {plato}\nIngredientes: "
+        if ingredientes_seleccionados:
+            mensaje += ", ".join(ingredientes_seleccionados)
+        else:
+            mensaje += "Ninguno"
+        pedidos.append(mensaje)
+        actualizar_contador()
+
+    def actualizar_contador():
+        label_carrito.config(text=f"Carrito: {len(pedidos)}")
+
+    # Actualizar el contador inicialmente
+    actualizar_contador()
+
+
+    def agregar_al_carrito(plato, ingredientes_seleccionados):
+        mensaje = f"Plato: {plato}\nIngredientes: "
+        if ingredientes_seleccionados:
+            mensaje += ", ".join(ingredientes_seleccionados)
+        else:
+            mensaje += "Ninguno"
+        pedidos.append(mensaje)
+        actualizar_contador()  # Agregar esta línea para actualizar el carrito
+
 
 def ver_pedidos():
     ventana_ver_pedidos = tk.Toplevel()
@@ -99,8 +121,9 @@ def ver_pedidos():
             label_pedido = tk.Label(ventana_ver_pedidos, text=pedido, font=("Helvetica", 12))
             label_pedido.pack(padx=20, pady=5)
 
-def limpiar_pedidos():
+def limpiar_pedidos(label_contador):  # Pasar la etiqueta como argumento
     pedidos.clear()
+    actualizar_contador(label_contador)  # Actualizar el contador después de limpiar los pedidos
     messagebox.showinfo("Pedidos Limpiados", "La lista de pedidos ha sido limpiada.")
 
 def enviar_pedidos():
@@ -138,10 +161,31 @@ def abrir_ventana_pedidos_comida():
     for plato in platos_postres.keys():
         tk.Button(frame_platos_postres, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Postres"), font=("Helvetica", 14), bg="orange", fg="white").pack(pady=5, padx=10)
 
+    # Visualización del carrito
+    carrito_texto = tk.StringVar()  # Variable para almacenar el texto del carrito
+    label_carrito = tk.Label(ventana_pedidos, textvariable=carrito_texto, font=("Helvetica", 14))
+    label_carrito.pack()
+
+    # Función para actualizar el carrito
+    def actualizar_carrito():
+        texto_carrito = "Carrito:\n" + "\n".join(pedidos)
+        carrito_texto.set(texto_carrito)  # Actualizar el texto del carrito
+
     # Botones para ver resumen de pedidos y limpiar la lista
+    label_contador = tk.Label(ventana_pedidos)  # Etiqueta para el contador de pedidos
+    label_contador.pack()
     tk.Button(ventana_pedidos, text="Ver Pedidos", command=ver_pedidos, font=("Helvetica", 14), bg="gray", fg="white").pack(pady=10)
-    tk.Button(ventana_pedidos, text="Limpiar Pedidos", command=limpiar_pedidos, font=("Helvetica", 14), bg="red", fg="white").pack(pady=10)
+    tk.Button(ventana_pedidos, text="Limpiar Pedidos", command=lambda: limpiar_pedidos(label_contador), font=("Helvetica", 14), bg="red", fg="white").pack(pady=10)
     tk.Button(ventana_pedidos, text="Enviar Pedidos", command=enviar_pedidos, font=("Helvetica", 14), bg="green", fg="white").pack(pady=10)
+
+
+    return ventana_pedidos
+
+
+
+
+def actualizar_contador(label_contador):  # Pasar la etiqueta como argumento
+    label_contador.config(text=f"Pedidos: {len(pedidos)}")
 
 def main():
     root = tk.Tk()
