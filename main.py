@@ -51,7 +51,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         restaurant_label = tk.Label(self, text="Ramen & Roll", font=("Helvetica", 36, "bold"), fg="white", bg="black")
         restaurant_label.place(relx=0.5, rely=0.1, anchor="center")
         
-        self.orders_button2 = tk.Button(self, text="Menu Comida", font=("Helvetica", 24), command=self.mostrar_menu, width=15)
+        self.orders_button2 = tk.Button(self, text="Menu Comida", font=("Helvetica", 24), command=self.open_menu_comidas, width=15)
         self.orders_button2.place(relx=0.5, rely=0.3, anchor="center")
         
         self.orders_button = tk.Button(self, text="Menu Bebidas", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
@@ -97,7 +97,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         self.verificar_sesion()
         abrir_ventana_pedidos()
         
-    def mostrar_menu(self):
+    def open_menu_comidas(self):
         self.verificar_sesion()
         mostrar_menu()    
         
