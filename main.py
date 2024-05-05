@@ -3,8 +3,33 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import sesion  # Importa el módulo de inicio de sesión
 import requests
+import json
+import time
 
-class RestauranteApp(tk.Tk):  
+def check_server_status(url):
+    servidor_activo = False
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            print(response.text)
+            servidor_activo = True
+        else:
+            print(f"El servidor respondió con el código de estado: {response.status_code}")
+            servidor_activo = False
+    except requests.ConnectionError:
+        print("No se pudo conectar al servidor.")
+        servidor_activo = False
+    
+    return servidor_activo
+
+def main():
+    # Llamar a la función para mostrar el menú antes de iniciar la aplicación principal
+    # mostrar_menu()
+
+    app = RestauranteApp()
+    app.mainloop()
+
+class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
     def __init__(self):
         super().__init__()
         self.title("Interfaz con Botones")
@@ -50,7 +75,8 @@ class RestauranteApp(tk.Tk):
         self.sign_in_button = tk.Button(self, text="Iniciar sesión", font=("Helvetica", 24), command=self.choose_login, width=15)
         self.sign_in_button.place(relx=0.8, rely=0.1, anchor="center")
         
-        servidor_esta_activo = check_server_status("http://100.82.213.30:5000")
+        # Llamar a la función para verificar si el servidor de http://192.168.100.89:5000/ está activo
+        servidor_esta_activo = check_server_status("http://172.16.119.128:5000/")
         if servidor_esta_activo:
             print("El servidor está activo.")
             restaurant_label = tk.Label(self, text="Servidor activo", font=("Helvetica", 12, "bold"), fg="green")
@@ -74,7 +100,7 @@ class RestauranteApp(tk.Tk):
     def mostrar_menu(self):
         self.verificar_sesion()
         mostrar_menu()    
-            
+        
     def close_all_windows(self):
         self.destroy()
         
