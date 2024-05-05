@@ -1,3 +1,4 @@
+import json
 import tkinter as tk
 from tkinter import messagebox
 import requests
@@ -5,7 +6,15 @@ import requests
 def iniciar_sesion_cliente(nombre):
     # Realiza la lógica de inicio de sesión para el cliente con el nombre proporcionado
     data = {'nombre': nombre}
-    response = requests.post('http://100.82.213.30:5000/login', json=data)
+    response = requests.post('http://192.168.100.89:5000/loginusuario', json=data)
+    
+    # extraer los datos del return
+    data = response.json()
+    data = {'id': data['id'], 'nombre': data['nombre'], 'tipo_usuario': 'cliente'}
+    # Guardar id y nombre de usuario en usuario.json
+    with open('usuario.json', 'w') as file:
+        json.dump(data, file)
+        
 
     if response.status_code == 200:
         # Si el inicio de sesión es exitoso, muestra un mensaje de éxito
@@ -14,10 +23,25 @@ def iniciar_sesion_cliente(nombre):
         # Si el inicio de sesión falla, muestra un mensaje de error
         messagebox.showerror("Inicio de Sesión", "Error al iniciar sesión.")
 
-def iniciar_sesion_otro(nombre, contraseña):
-    # Realiza la lógica de inicio de sesión para otros tipos de usuarios
-    # Puedes implementar la lógica de inicio de sesión con nombre y contraseña aquí
+def iniciar_sesion_otro(nombre, password, tipo_usuario):
+    # Realiza la lógica de inicio de sesión para el chef con el nombre y contraseña proporcionados
+    data = {'nombre': nombre, 'password': password, 'tipo_usuario': tipo_usuario}
+    response = requests.post('http://192.168.100.89:5000/loginotro', json=data)
+
+    # extraer los datos del return
+    data = response.json()
+    data = {'id': data['id'], 'nombre': data['nombre'], 'tipo_usuario': tipo_usuario}
+    
+    # Guardar id y nombre de usuario en usuario.json
+    with open('usuario.json', 'w') as file:
+        json.dump(data, file)
+    
+    if response.status_code == 200:
+        messagebox.showinfo("Inicio de Sesión", "¡Inicio de sesión exitoso!")
+    else:
+        messagebox.showerror("Inicio de Sesión", "Error al iniciar sesión.")
     pass
+
 
 def iniciar_sesion():
     # Crea la ventana
