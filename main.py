@@ -3,25 +3,33 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import sesion  # Importa el módulo de inicio de sesión
 import requests
+from acerca import acerca_ventana
+from mesas import mesas_ventana
+from recomendaciones import recomendaciones_ventana
+from menu_comida import mostrar_menu
+from pedidos_bebidas import abrir_ventana_pedidos
+
 
 class RestauranteApp(tk.Tk):  
     def __init__(self):
         super().__init__()
         self.title("Interfaz con Botones")
         self.attributes('-fullscreen', True)  
-        
         self.nombre_usuario = None
         self.sesion_iniciada = False
         self.id = 0
-
+        
         try:
-            self.bg_image = Image.open("imagenes/background_image.png")
+            background_image_path = "imagenes/background_image.png"
+            # Carga la imagen de fondo
+            self.bg_image = Image.open(background_image_path)
             self.bg_image = self.bg_image.resize((self.winfo_screenwidth(), self.winfo_screenheight()))
             self.bg_image = ImageTk.PhotoImage(self.bg_image)
             self.bg_label = tk.Label(self, image=self.bg_image)
-            self.bg_label.place(relx=0.5, rely=0.5, anchor="center")
+            self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)  # Coloca la imagen de fondo en toda la ventana
         except Exception as e:
             print("Error al cargar la imagen de fondo:", e)
+
 
         restaurant_label = tk.Label(self, text="Ramen & Roll", font=("Helvetica", 36, "bold"), fg="white", bg="black")
         restaurant_label.place(relx=0.5, rely=0.1, anchor="center")
@@ -175,11 +183,14 @@ def iniciar_sesion(nombre, tipo_usuario, window):
         # Si el tipo de usuario no es "cliente", se requiere nombre y contraseña para iniciar sesión
         # Puedes realizar la lógica de inicio de sesión con nombre y contraseña para otros tipos de usuarios
         # Aquí puedes llamar a la función de inicio de sesión del módulo "sesion.py" con nombre y contraseña
-        sesion.iniciar_sesion_otro(nombre, password)
+        sesion.iniciar_sesion_otro(nombre,password)
         
     # Cierra la ventana de inicio de sesión después de iniciar sesión
     window.destroy()
+bg_image = Image.open("imagenes/background_image.png")
+
 
 if __name__ == "__main__":
     app = RestauranteApp()
     app.mainloop()
+
