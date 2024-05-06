@@ -2,9 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 import sesion  # Importa el módulo de inicio de sesión
-import requests
 import json
-import time
 
 def main():
     # Llamar a la función para mostrar el menú antes de iniciar la aplicación principal
@@ -92,6 +90,9 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         
     def sign_in(self):
         iniciar_sesion()
+        
+    def mostrar_menu(self):
+        pass
 
     def sign_out(self):
         self.nombre_usuario = None
