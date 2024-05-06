@@ -8,7 +8,7 @@ import time
 
 def main():
     # Llamar a la función para mostrar el menú antes de iniciar la aplicación principal
-    #mostrar_menu()
+    # mostrar_menu()
 
     app = RestauranteApp()
     app.mainloop()
@@ -42,8 +42,8 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         self.orders_button.place(relx=0.5, rely=0.4, anchor="center")
         
         # PARA EL CHEF, BARTENDER Y MESERO
-       # self.orden_bebida = tk.Button(self, text="Orden bebida", font=("Helvetica", 24), command=self.mostrar_menu, width=15)
-        #self.orden_bebida.place_forget()
+        self.orden_bebida = tk.Button(self, text="Orden bebida", font=("Helvetica", 24), width=15)
+        self.orden_bebida.place_forget()
         
         self.orden_comida = tk.Button(self, text="Orden Comida", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
         self.orden_comida.place_forget()
@@ -85,8 +85,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         
     def open_menu_comidas(self):
         self.verificar_sesion()
-        mostrar_menu()
-
+        mostrar_menu()    
         
     def close_all_windows(self):
         self.destroy()
