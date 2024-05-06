@@ -1,57 +1,57 @@
 import tkinter as tk
 from tkinter import ttk, simpledialog, messagebox
+import qrcode
+from PIL import Image, ImageTk
 
-# Lista de platos principales y sus ingredientes
-platos_principales = {
-    'Sushi de salmón': ['Arroz', 'Salmón fresco', 'Alga nori', 'Vinagre de arroz', 'Salsa de soja', 'Wasabi', 'Jengibre encurtido'],
-    'Tempura de verduras': ['Verduras variadas', 'Harina', 'Huevo', 'Agua con gas', 'Salsa de soja', 'Jengibre encurtido'],
-    'Ramen de pollo': ['Caldo de pollo', 'Fideos ramen', 'Pollo', 'Huevo', 'Cebolleta', 'Brotes de bambú', 'Setas shiitake'],
-    'Gyudon': ['Ternera', 'Cebolla', 'Salsa de soja', 'Caldo dashi', 'Azúcar', 'Jengibre', 'Arroz'],
-}
+import tkinter as tk
+from tkinter import ttk, simpledialog, messagebox
+import qrcode
+import json
+from PIL import Image, ImageTk
 
-# Lista de platos de entradas y sus ingredientes
-platos_entradas ={
-    'Bruschetta': ['Pan baguette','Ajo','Albahaca fresca','Aceite de oliva virgen', 'Vinagre balsámico','Sal y pimienta al gusto','Tomates maduros'],
-    'Ensalada Caprese': ['Tomates maduros','Mozzarella fresca','Hojas de albahaca fresca','Aceite de oliva virgen', 'Vinagre balsámico','Sal y pimienta al gusto','Tomates maduros'],
-    'Queso fundido': ['Queso rallado: cheddar, mozzarella, mixto','Chorizo, champiñones','Tortillas de maíz o chips de tortilla para servir'],
-    'Sashimi': ['Pescado fresco: salmón, atún, hamachi (pez limón), vieira','Wasabi','Salsa de soja'],
-    'Yakitori': ['Pollo','Salsa Yakitori','Sake o mirin','Salsa de soja','Azúcar','Ajo','Jengibre rallado'],
-    'Nigiri sushi': ['Pescado','Arroz sushi','Wasabi','Salsa de soja','Azúcar','Jengibre encurtido']
-}
+# Función para cargar datos desde un archivo JSON
+def cargar_datos(filename):
+    with open(filename, 'r') as file:
+        return json.load(file)
 
-# Lista de platos de postres y sus ingredientes
-platos_postres = {
-    'Tarta de queso': ['Queso crema','Azúcar','Huevos','Extracto de vainilla', 'Galletas para la base','Mantequilla'],
-    'Coulant de chocolate': ['Chocolate negro','Azúcar','Huevos','Mantequilla', 'Harina'],
-    'Crème brûlée': ['Crema de leche','Azúcar','Yemas de huevo','Vainilla'],
-    'Dorayaki': ['Harina de trigo','Azúcar','Miel','Huevos','Bicarbonato de sodio','Agua','Anko'],
-    'Mochi': ['Harina de arroz glutinoso','Azúcar','Agua','Rellenos: fresa, mango, té verde']
-}
+# Cargar los datos de bebidas e ingredientes
+datos = cargar_datos('RegistroPlatillos.json')
+bebidas = datos['bebidas']
+platos_principales = datos['platos_principales']
+platos_entradas = datos['platos_entradas']
+platos_postres = datos['platos_postres']
 
 # Lista para almacenar los pedidos realizados
 pedidos = []
 
-def abrir_ventana_ingredientes(plato, tipo):
+
+
+# Lista para almacenar los pedidos realizados
+pedidos = []
+
+def abrir_ventana_bebidas(bebida):
+    ventana_bebidas = tk.Toplevel()
+    ventana_bebidas.title(f"Variantes para {bebida}")
+
+    for variante in bebidas[bebida]:
+        tk.Button(ventana_bebidas, text=variante, command=lambda variante=variante: agregar_bebida(f"{bebida} - {variante}"), font=("Helvetica", 14), bg="#F7C898", fg="#000000").pack(pady=5, padx=10, fill="both", expand=True)
+
+def abrir_ventana_ingredientes(plato, bebida, tipo):
     ventana_ingredientes = tk.Toplevel()
-    ventana_ingredientes.title(f"Ingredientes para {plato}")
+    ventana_ingredientes.title(f"Ingredientes para {plato}, {bebida}")
 
     platos = platos_principales
     if tipo == "Entradas":
         platos = platos_entradas
     elif tipo == "Postres":
-        platos = platos_postres
-    
-    ingredientes_seleccionados = []
+        platos = platos_postres       
 
-    def agregar_ingrediente(ingrediente):
-        if ingrediente not in ingredientes_seleccionados:
-            ingredientes_seleccionados.append(ingrediente)
+    ingredientes_seleccionados = []
 
     def finalizar_seleccion():
         if ingredientes_seleccionados:
             agregar_al_carrito(plato, ingredientes_seleccionados)
             ventana_ingredientes.destroy()
-            actualizar_contador()  # Actualizar contador de pedidos
         else:
             messagebox.showwarning("Sin Ingredientes", "Por favor, seleccione al menos un ingrediente.")
 
@@ -76,38 +76,24 @@ def abrir_ventana_ingredientes(plato, tipo):
 
     lista_ingredientes.bind("<<ListboxSelect>>", on_select)
 
-    boton_agregar = tk.Button(ventana_ingredientes, text="Finalizar Selección", command=finalizar_seleccion, font=("Helvetica", 14, "bold"), bg="green", fg="white")
+    boton_agregar = tk.Button(ventana_ingredientes, text="Finalizar Selección", command=finalizar_seleccion, font=("Helvetica", 14, "bold"))
     boton_agregar.pack(pady=10)
 
-    # Funcionalidad del carrito
-    label_carrito = tk.Label(ventana_ingredientes, text="Carrito:", font=("Helvetica", 12, "bold"))
-    label_carrito.pack(pady=10)
-
-    def agregar_al_carrito(plato, ingredientes_seleccionados):
-        mensaje = f"Plato: {plato}\nIngredientes: "
-        if ingredientes_seleccionados:
-            mensaje += ", ".join(ingredientes_seleccionados)
-        else:
-            mensaje += "Ninguno"
-        pedidos.append(mensaje)
-        actualizar_contador()
-
-    def actualizar_contador():
-        label_carrito.config(text=f"Carrito: {len(pedidos)}")
-
-    # Actualizar el contador inicialmente
+def agregar_bebida(bebida):
+    pedidos.append(f"Bebida: {bebida}")
     actualizar_contador()
 
-
-    def agregar_al_carrito(plato, ingredientes_seleccionados):
+def finalizar_seleccion(plato, ingredientes_seleccionados):
+    if ingredientes_seleccionados:
         mensaje = f"Plato: {plato}\nIngredientes: "
-        if ingredientes_seleccionados:
-            mensaje += ", ".join(ingredientes_seleccionados)
-        else:
-            mensaje += "Ninguno"
+        mensaje += ", ".join(ingredientes_seleccionados)
         pedidos.append(mensaje)
-        actualizar_contador()  # Agregar esta línea para actualizar el carrito
+        actualizar_contador()
+    else:
+        messagebox.showwarning("Sin Ingredientes", "Por favor, seleccione al menos un ingrediente.")
 
+def actualizar_contador():
+    label_carrito.config(text=f"Carrito: {len(pedidos)}")
 
 def ver_pedidos():
     ventana_ver_pedidos = tk.Toplevel()
@@ -121,71 +107,75 @@ def ver_pedidos():
             label_pedido = tk.Label(ventana_ver_pedidos, text=pedido, font=("Helvetica", 12))
             label_pedido.pack(padx=20, pady=5)
 
-def limpiar_pedidos(label_contador):  # Pasar la etiqueta como argumento
+def limpiar_pedidos():  
     pedidos.clear()
-    actualizar_contador(label_contador)  # Actualizar el contador después de limpiar los pedidos
+    actualizar_contador()
     messagebox.showinfo("Pedidos Limpiados", "La lista de pedidos ha sido limpiada.")
 
 def enviar_pedidos():
     if not pedidos:
         messagebox.showwarning("Sin Pedidos", "No hay pedidos para enviar.")
     else:
-        # Aquí agregaría el código para enviar los pedidos, por ejemplo, a través de una API, correo electrónico, etc.
-        messagebox.showinfo("Pedidos Enviados", "Los pedidos han sido enviados correctamente.")
+        qr_data = "\n".join(pedidos)
+        qr = qrcode.make(qr_data)
+
+        ventana_qr = tk.Toplevel()
+        ventana_qr.title("Código QR de Pedidos")
+
+        qr_image = ImageTk.PhotoImage(qr)
+
+        qr_label = tk.Label(ventana_qr, image=qr_image)
+        qr_label.image = qr_image
+        qr_label.pack(padx=20, pady=20)
+
+        qr_image_path = "pedido_qr.png"
+        qr.save(qr_image_path)
+        messagebox.showinfo("Código QR Generado", f"El código QR de los pedidos ha sido generado y guardado como {qr_image_path}.")
 
 def abrir_ventana_pedidos_comida():
     ventana_pedidos = tk.Toplevel()
     ventana_pedidos.title("Pedidos de Comida Japonesa")
 
-    # Creación de pestañas para platos principales, entradas y postres
     notebook = ttk.Notebook(ventana_pedidos)
     notebook.pack(fill=tk.BOTH, expand=True)
 
     frame_platos_principales = tk.Frame(notebook)
     frame_platos_entradas = tk.Frame(notebook)
     frame_platos_postres = tk.Frame(notebook)
+    frame_bebidas = tk.Frame(notebook)
 
     notebook.add(frame_platos_principales, text="Platos Principales")
     notebook.add(frame_platos_entradas, text="Entradas")
     notebook.add(frame_platos_postres, text="Postres")
+    notebook.add(frame_bebidas, text="Bebidas")
 
-    # Botones de platos principales
     for plato in platos_principales.keys():
-        tk.Button(frame_platos_principales, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Principales"), font=("Helvetica", 14), bg="blue", fg="white").pack(pady=5, padx=10)
+        tk.Button(frame_platos_principales, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Principales", "Platos Principales"), font=("Helvetica", 14), bg="#F7C898", fg="#000000").pack(pady=5, padx=10, fill="both", expand=True)
 
-    # Botones de entradas
     for plato in platos_entradas.keys():
-        tk.Button(frame_platos_entradas, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Entradas"), font=("Helvetica", 14), bg="green", fg="white").pack(pady=5, padx=10)
+        tk.Button(frame_platos_entradas, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Entradas", "Entradas"), font=("Helvetica", 14), bg="#F7C898", fg="#000000").pack(pady=5, padx=10, fill="both", expand=True)
 
-    # Botones de postres
     for plato in platos_postres.keys():
-        tk.Button(frame_platos_postres, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Postres"), font=("Helvetica", 14), bg="orange", fg="white").pack(pady=5, padx=10)
+        tk.Button(frame_platos_postres, text=plato, command=lambda plato=plato: abrir_ventana_ingredientes(plato, "Postres", "Postres"), font=("Helvetica", 14), bg="#F7C898", fg="#000000").pack(pady=5, padx=10, fill="both", expand=True)
+    
+    row_index = 0
+    col_index = 0
+    for bebida in bebidas.keys():
+        tk.Button(frame_bebidas, text=bebida, command=lambda bebida=bebida: abrir_ventana_bebidas(bebida), font=("Helvetica", 14), bg="#F7C898", fg="#000000").grid(row=row_index, column=col_index, padx=5, pady=5, sticky="nsew")
+        col_index += 1
+        if col_index == 3:
+            col_index = 0
+            row_index += 1
 
-    # Visualización del carrito
-    carrito_texto = tk.StringVar()  # Variable para almacenar el texto del carrito
+    carrito_texto = tk.StringVar()  
     label_carrito = tk.Label(ventana_pedidos, textvariable=carrito_texto, font=("Helvetica", 14))
     label_carrito.pack()
 
-    # Función para actualizar el carrito
-    def actualizar_carrito():
-        texto_carrito = "Carrito:\n" + "\n".join(pedidos)
-        carrito_texto.set(texto_carrito)  # Actualizar el texto del carrito
-
-    # Botones para ver resumen de pedidos y limpiar la lista
-    label_contador = tk.Label(ventana_pedidos)  # Etiqueta para el contador de pedidos
-    label_contador.pack()
-    tk.Button(ventana_pedidos, text="Ver Pedidos", command=ver_pedidos, font=("Helvetica", 14), bg="gray", fg="white").pack(pady=10)
-    tk.Button(ventana_pedidos, text="Limpiar Pedidos", command=lambda: limpiar_pedidos(label_contador), font=("Helvetica", 14), bg="red", fg="white").pack(pady=10)
-    tk.Button(ventana_pedidos, text="Enviar Pedidos", command=enviar_pedidos, font=("Helvetica", 14), bg="green", fg="white").pack(pady=10)
-
+    tk.Button(ventana_pedidos, text="Ver Pedidos", command=ver_pedidos, font=("Helvetica", 14), bg="#8B4513", fg="#FFFAF0").pack(pady=10)
+    tk.Button(ventana_pedidos, text="Limpiar Pedidos", command=limpiar_pedidos, font=("Helvetica", 14), bg="#8B4513", fg="#FFFAF0").pack(pady=10)
+    tk.Button(ventana_pedidos, text="Enviar Pedidos", command=enviar_pedidos, font=("Helvetica", 14), bg="#8B4513", fg="#FFFAF0").pack(pady=10)
 
     return ventana_pedidos
-
-
-
-
-def actualizar_contador(label_contador):  # Pasar la etiqueta como argumento
-    label_contador.config(text=f"Pedidos: {len(pedidos)}")
 
 def main():
     root = tk.Tk()
