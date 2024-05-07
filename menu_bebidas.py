@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import tkinter as tk
 from tkinter import simpledialog, messagebox, ttk
 from PIL import Image, ImageTk
@@ -176,7 +175,7 @@ def abrir_ventana_pedidos():
 
 # Llamada para abrir automáticamente la ventana de pedidos al ejecutar el programa
 abrir_ventana_pedidos()
-=======
+
 import tkinter as tk
 from tkinter import simpledialog, messagebox, ttk
 from PIL import Image, ImageTk
@@ -280,9 +279,15 @@ def abrir_ventana_pedidos():
             print("Error al obtener los ingredientes:", e)
 
     def actualizar_carrito():
-        # Función de actualizar el carrito, igual que en el código original
-        pass
+        global text_carrito
+        if text_carrito is None:
+            text_carrito = tk.Text(cart_frame, height=10, width=50)
+            text_carrito.pack(side="top")
+        text_carrito.delete(1.0, tk.END)
+        for producto, cantidad in carrito.items():
+            text_carrito.insert(tk.END, f"{producto}: {cantidad}\n")
 
+    
     def crear_boton_bebida(nombre, descripcion, frame, col, row):
         bebida_frame = tk.Frame(frame, bd=2, relief="groove", padx=5, pady=5, bg='#F7C898')
         bebida_frame.grid(row=row, column=col, padx=10, pady=10, sticky="nsew", ipadx=10, ipady=10)
@@ -384,8 +389,22 @@ def abrir_ventana_pedidos():
     scrollbar.pack(side="left", fill="y")
 
     def generar_y_mostrar_qr():
-        # Función para generar y mostrar el código QR, igual que en el código original
-        pass
+        if not carrito:
+            messagebox.showinfo("Información", "El carrito está vacío.")
+            return
+
+        # Crear datos para el QR
+        qr_data = "; ".join([f"{producto}: {cantidad}" for producto, cantidad in carrito.items()])
+        qr = qrcode.make(qr_data)
+
+        # Mostrar el QR en una nueva ventana
+        top = tk.Toplevel()
+        top.title("Código QR del Pedido")
+        qr_image = ImageTk.PhotoImage(qr)
+        qr_label = tk.Label(top, image=qr_image)
+        qr_label.image = qr_image  # mantener una referencia
+        qr_label.pack()
+
 
     boton_confirmar = tk.Button(cart_frame, text="Generar QR del Pedido", command=generar_y_mostrar_qr)
     boton_confirmar.pack(side="top", pady=10)
@@ -397,4 +416,4 @@ def abrir_ventana_pedidos():
 
 # Llamada para abrir automáticamente la ventana de pedidos al ejecutar el programa
 abrir_ventana_pedidos()
->>>>>>> 469f732991715d95ed9645f61dcb339e3b4be7c2
+
