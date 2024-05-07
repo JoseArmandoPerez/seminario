@@ -6,7 +6,7 @@ import qrcode
 import os
 
 # Dirección IP del servidor y ruta para obtener la lista de bebidas
-SERVER_URL = "http://172.16.121.136:5000"
+SERVER_URL = "http://172.16.119.180:5000"
 BEBIDAS_ENDPOINT = f"{SERVER_URL}/bebidas"
 
 text_carrito = None
@@ -88,7 +88,7 @@ def abrir_ventana_pedidos():
         # Función de actualizar el carrito, igual que en el código original
         pass
 
-    def crear_boton_bebida(nombre, descripcion, frame, col, row):
+    def crear_boton_bebida(nombre, descripcion, precio, frame, col, row):
         bebida_frame = tk.Frame(frame, bd=2, relief="groove", padx=5, pady=5, bg='#F7C898')
         bebida_frame.grid(row=row, column=col, padx=10, pady=10, sticky="nsew", ipadx=10, ipady=10)
 
@@ -111,6 +111,9 @@ def abrir_ventana_pedidos():
         label_descripcion = tk.Label(bebida_frame, text=descripcion, font=("Helvetica", 10), bg='#F7C898', fg='black', wraplength=180)
         label_descripcion.pack(side="top")
 
+        label_precio = tk.Label(bebida_frame, text=f"Precio: ${precio}", font=("Helvetica", 10), bg='#F7C898', fg='black')
+        label_precio.pack(side="top")
+
         boton_aumentar = tk.Button(bebida_frame, text="Añadir", command=lambda prod=nombre: agregar_al_carrito(prod), bg='#C2F798', fg='black')
         boton_aumentar.pack(side="left", padx=10)
 
@@ -127,7 +130,8 @@ def abrir_ventana_pedidos():
         for bebida in lista_bebidas:
             nombre = bebida.get('nombre', 'Nombre no disponible')
             descripcion = bebida.get('descripcion', 'Descripción no disponible')
-            crear_boton_bebida(nombre, descripcion, scrollable_frame, col, row)
+            precio = bebida.get('precio', 'Precio no disponible')  # Agregamos el precio aquí
+            crear_boton_bebida(nombre, descripcion, precio, scrollable_frame, col, row)
             col += 1
             if col == 4:
                 col = 0
