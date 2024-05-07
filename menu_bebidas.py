@@ -6,7 +6,7 @@ import qrcode
 import os
 
 # Dirección IP del servidor y ruta para obtener la lista de bebidas
-SERVER_URL = "http://172.16.121.136:5000"
+SERVER_URL = "http://172.16.119.180:5000"
 BEBIDAS_ENDPOINT = f"{SERVER_URL}/bebidas"
 
 text_carrito = None
@@ -85,10 +85,17 @@ def abrir_ventana_pedidos():
             print("Error al obtener los ingredientes:", e)
 
     def actualizar_carrito():
-        # Función de actualizar el carrito, igual que en el código original
-        pass
+        global text_carrito
+        if text_carrito is None:
+            text_carrito = tk.Text(cart_frame, height=10, width=50)
+            text_carrito.pack(side="top")
+        text_carrito.delete(1.0, tk.END)
+        for producto, cantidad in carrito.items():
+            text_carrito.insert(tk.END, f"{producto}: {cantidad}\n")
 
-    def crear_boton_bebida(nombre, descripcion, frame, col, row):
+    def crear_boton_bebida(bebida, frame, col, row):
+        nombre = bebida.get('nombre', 'Nombre no disponible')
+        descripcion = bebida.get('descripcion', 'Descripción no disponible')
         bebida_frame = tk.Frame(frame, bd=2, relief="groove", padx=5, pady=5, bg='#F7C898')
         bebida_frame.grid(row=row, column=col, padx=10, pady=10, sticky="nsew", ipadx=10, ipady=10)
 
@@ -111,27 +118,26 @@ def abrir_ventana_pedidos():
         label_descripcion = tk.Label(bebida_frame, text=descripcion, font=("Helvetica", 10), bg='#F7C898', fg='black', wraplength=180)
         label_descripcion.pack(side="top")
 
-        boton_aumentar = tk.Button(bebida_frame, text="Añadir", command=lambda prod=nombre: agregar_al_carrito(prod), bg='#C2F798', fg='black')
+        boton_aumentar = tk.Button(bebida_frame, text="Añadir", command=lambda: agregar_al_carrito(nombre), bg='#C2F798', fg='black')
         boton_aumentar.pack(side="left", padx=10)
 
-        boton_disminuir = tk.Button(bebida_frame, text="Quitar", command=lambda prod=nombre: agregar_al_carrito(prod, -1), bg='#F57682', fg='black')
+        boton_disminuir = tk.Button(bebida_frame, text="Quitar", command=lambda: agregar_al_carrito(nombre, -1), bg='#F57682', fg='black')
         boton_disminuir.pack(side="right", padx=10)
 
-        boton_nota = tk.Button(bebida_frame, text="Agregar Ing", command=lambda prod=nombre: agregar_ingrediente(prod), bg='#F5D276', fg='black')
+        boton_nota = tk.Button(bebida_frame, text="Agregar Ing", command=lambda: agregar_ingrediente(bebida), bg='#F5D276', fg='black')
         boton_nota.pack(side="bottom", pady=5)
-
-    # Obtener la lista de bebidas desde el servidor
+        
     lista_bebidas = obtener_lista_bebidas()
+
 
     if lista_bebidas:
         for bebida in lista_bebidas:
-            nombre = bebida.get('nombre', 'Nombre no disponible')
-            descripcion = bebida.get('descripcion', 'Descripción no disponible')
-            crear_boton_bebida(nombre, descripcion, scrollable_frame, col, row)
+            crear_boton_bebida(bebida, scrollable_frame, col, row)
             col += 1
             if col == 4:
                 col = 0
                 row += 1
+
 
     cart_frame = tk.Frame(main_frame, bd=2, relief="sunken", padx=5, pady=5)
     cart_frame.pack(side="right", fill="y")
@@ -143,8 +149,21 @@ def abrir_ventana_pedidos():
     scrollbar.pack(side="left", fill="y")
 
     def generar_y_mostrar_qr():
-        # Función para generar y mostrar el código QR, igual que en el código original
-        pass
+        if not carrito:
+            messagebox.showinfo("Información", "El carrito está vacío.")
+            return
+
+        # Crear datos para el QR
+        qr_data = "; ".join([f"{producto}: {cantidad}" for producto, cantidad in carrito.items()])
+        qr = qrcode.make(qr_data)
+
+        # Mostrar el QR en una nueva ventana
+        top = tk.Toplevel()
+        top.title("Código QR del Pedido")
+        qr_image = ImageTk.PhotoImage(qr)
+        qr_label = tk.Label(top, image=qr_image)
+        qr_label.image = qr_image  # mantener una referencia
+        qr_label.pack()
 
     boton_confirmar = tk.Button(cart_frame, text="Generar QR del Pedido", command=generar_y_mostrar_qr)
     boton_confirmar.pack(side="top", pady=10)
