@@ -1,0 +1,142 @@
+{
+    "platos_principales": {
+        "Sushi de salmon": {
+            "descripcion": "Sushi fresco con arroz, salmon y alga nori, servido con salsa de soja, wasabi y jengibre encurtido.",
+            "ingredientes": ["Arroz", "Salmon fresco", "Alga nori", "Vinagre de arroz", "Salsa de soja", "Wasabi", "Jengibre encurtido"]
+        },
+        "Tempura de verduras": {
+            "descripcion": "Verduras variadas en un crujiente rebozado de tempura, servidas con salsa de soja y jengibre encurtido.",
+            "ingredientes": ["Verduras variadas", "Harina", "Huevo", "Agua con gas", "Salsa de soja", "Jengibre encurtido"]
+        },
+        "Ramen de pollo": {
+            "descripcion": "Caldo de pollo rico y sabroso con fideos ramen, pollo, huevo, cebolleta, brotes de bambu y setas shiitake.",
+            "ingredientes": ["Caldo de pollo", "Fideos ramen", "Pollo", "Huevo", "Cebolleta", "Brotes de bambu", "Setas shiitake"]
+        },
+        "Gyudon": {
+            "descripcion": "Ternera tierna cocida con cebolla en salsa de soja y dashi, servido sobre arroz.",
+            "ingredientes": ["Ternera", "Cebolla", "Salsa de soja", "Caldo dashi", "Azucar", "Jengibre", "Arroz"]
+        }
+    },
+    "platos_entradas": {
+        "Bruschetta": {
+            "descripcion": "Rodajas de pan baguette tostado con tomate fresco, ajo, albahaca y un toque de vinagre balsamico.",
+            "ingredientes": ["Pan baguette", "Ajo", "Albahaca fresca", "Aceite de oliva virgen", "Vinagre balsamico", "Sal y pimienta al gusto", "Tomates maduros"]
+        },
+        "Ensalada Caprese": {
+            "descripcion": "Tomates maduros y mozzarella fresca con albahaca y un aliño de aceite de oliva y balsamico.",
+            "ingredientes": ["Tomates maduros", "Mozzarella fresca", "Hojas de albahaca fresca", "Aceite de oliva virgen", "Vinagre balsamico", "Sal y pimienta al gusto", "Tomates maduros"]
+        },
+        "Queso fundido": {
+            "descripcion": "Queso derretido con chorizo o champinones, servido con tortillas de maiz o chips de tortilla.",
+            "ingredientes": ["Queso rallado: cheddar, mozzarella, mixto", "Chorizo, champinones", "Tortillas de maiz o chips de tortilla para servir"]
+        },
+        "Sashimi": {
+            "descripcion": "Rodajas de pescado fresco como salmon o atun, servidas con wasabi y salsa de soja.",
+            "ingredientes": ["Pescado fresco: salmon, atun, hamachi (pez limon), vieira", "Wasabi", "Salsa de soja"]
+        },
+        "Yakitori": {
+            "descripcion": "Brochetas de pollo marinadas en salsa yakitori y asadas, acompañadas de sake o mirin.",
+            "ingredientes": ["Pollo", "Salsa Yakitori", "Sake o mirin", "Salsa de soja", "Azucar", "Ajo", "Jengibre rallado"]
+        },
+        "Nigiri sushi": {
+            "descripcion": "Bolitas de arroz sushi cubiertas con filetes de pescado fresco, servidas con wasabi y salsa de soja.",
+            "ingredientes": ["Pescado", "Arroz sushi", "Wasabi", "Salsa de soja", "Azucar", "Jengibre encurtido"]
+        }
+    },
+    "platos_postres": {
+        "Tarta de queso": {
+            "descripcion": "Suave y cremosa tarta de queso sobre una base de galleta, a menudo servida con fruta fresca o coulis.",
+            "ingredientes": ["Queso crema", "Azucar", "Huevos", "Extracto de vainilla", "Galletas para la base", "Mantequilla"]
+        },
+        "Coulant de chocolate": {
+            "descripcion": "Pequeño pastel de chocolate con un centro líquido de chocolate fundido.",
+            "ingredientes": ["Chocolate negro", "Azucar", "Huevos", "Mantequilla", "Harina"]
+        },
+        "Creme brulee": {
+            "descripcion": "Postre frances de crema custodia con una capa superior de caramelo crujiente.",
+            "ingredientes": ["Crema de leche", "Azucar", "Yemas de huevo", "Vainilla"]
+        },
+        "Dorayaki": {
+            "descripcion": "Pancakes japoneses rellenos de pasta de judia roja dulce, conocido como anko.",
+            "ingredientes": ["Harina de trigo", "Azucar", "Miel", "Huevos", "Bicarbonato de sodio", "Agua", "Anko"]
+        },
+        "Mochi": {
+            "descripcion": "Pastelitos japoneses de masa de arroz glutinoso, rellenos de fresa, mango, te verde u otros sabores.",
+            "ingredientes": ["Harina de arroz glutinoso", "Azucar", "Agua", "Rellenos: fresa, mango, te verde"]
+        }
+    },
+    "bebidas": {
+        "Coca-Cola": {
+            "descripcion": "Refresco de cola clasico, muy refrescante.",
+            "ingredientes": ["Con hielo", "Sin hielo", "Con limon"]
+        },
+        "Pepsi": {
+            "descripcion": "Otra variante popular del refresco de cola.",
+            "ingredientes": ["Con hielo", "Sin hielo", "Con limon"]
+        },
+        "Fanta": {
+            "descripcion": "Bebida de naranja sin alcohol.",
+            "ingredientes": ["Con hielo", "Sin hielo"]
+        },
+        "Sprite": {
+            "descripcion": "Refresco de limon lima sin colorantes.",
+            "ingredientes": ["Con hielo", "Sin hielo"]
+        },
+        "7 Up": {
+            "descripcion": "Refresco de limon con burbujas.",
+            "ingredientes": ["Con hielo", "Sin hielo"]
+        },
+        "Jarritos": {
+            "descripcion": "Refresco mexicano de sabores frutales.",
+            "ingredientes": ["Con hielo", "Sin hielo"]
+        },
+        "Agua mineral": {
+            "descripcion": "Agua con gas naturalmente enriquecida con minerales.",
+            "ingredientes": ["Con limon"]
+        },
+        "Limonada": {
+            "descripcion": "Bebida tradicional hecha de limones frescos.",
+            "ingredientes": ["Agua natural", "Agua mineral", "Con azucar", "Con stevia", "Con esplenda"]
+        },
+        "Te helado": {
+            "descripcion": "Te negro refrescante servido frio.",
+            "ingredientes": ["Con hielo", "Sin hielo", "Con azucar", "Con stevia", "Con esplenda"]
+        },
+        "Agua de horchata": {
+            "descripcion": "Bebida tradicional hecha con arroz y canela.",
+            "ingredientes": ["Con hielo", "Sin hielo", "Con canela"]
+        },
+        "Corona": {
+            "descripcion": "Cerveza tipo lager, ligera y refrescante.",
+            "ingredientes": ["Con limon", "Con sal", "Con clamato", "Con salsa inglesa", "Con salsa picante"]
+        },
+        "Modelo Especial": {
+            "descripcion": "Cerveza tipo pilsner de sabor robusto.",
+            "ingredientes": ["Con limon", "Con sal", "Con clamato", "Con salsa inglesa"]
+        },
+        "Heineken": {
+            "descripcion": "Cerveza tipo lager con un toque amargo.",
+            "ingredientes": ["Con limon", "Con sal"]
+        },
+        "Whisky": {
+            "descripcion": "Bebida alcoholica destilada de granos fermentados.",
+            "ingredientes": ["Con hielo", "Sin hielo", "Con agua"]
+        },
+        "Vodka": {
+            "descripcion": "Destilado originario de Rusia, neutral y versatil.",
+            "ingredientes": ["Con hielo", "Sin hielo", "Con limon", "Con agua tonica"]
+        },
+        "Tequila": {
+            "descripcion": "Destilado mexicano hecho de agave azul.",
+            "ingredientes": ["Con sal", "Con limon", "Con sangrita"]
+        },
+        "Vino Tinto": {
+            "descripcion": "Vino hecho de la fermentacion de uvas negras.",
+            "ingredientes": ["Con hielo", "Sin hielo"]
+        },
+        "Vino Blanco": {
+            "descripcion": "Vino producido a partir de uvas blancas o de uvas negras sin piel.",
+            "ingredientes": ["Con hielo", "Sin hielo", "Con soda"]
+        }
+    }
+}
