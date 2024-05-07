@@ -3,6 +3,11 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import sesion  # Importa el módulo de inicio de sesión
 import json
+import time
+import requests
+from acerca import acerca_ventana
+from mesas import mesas_ventana
+
 
 def main():
     # Llamar a la función para mostrar el menú antes de iniciar la aplicación principal
@@ -67,7 +72,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
 
         self.sign_in_button = tk.Button(self, text="Iniciar sesión", font=("Helvetica", 24), command=self.choose_login, width=15)
         self.sign_in_button.place(relx=0.8, rely=0.1, anchor="center")
-            
+
     def open_about_window(self):
         acerca_ventana()
 
@@ -93,7 +98,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         
     def mostrar_menu(self):
         pass
-
+    
     def sign_out(self):
         self.nombre_usuario = None
         self.sesion_iniciada = False
@@ -195,6 +200,7 @@ def mostrar_formulario(tipo_usuario, login_window):
 
         button = tk.Button(form_window, text="Ingresar", command=lambda: iniciar_sesion_otro(name_entry.get(), password_entry.get(), tipo_usuario, form_window))
         button.grid(row=2, columnspan=2, pady=10, padx=10)
+
 
 def iniciar_sesion(nombre, window):
 
