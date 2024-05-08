@@ -40,8 +40,8 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         self.orders_button.place(relx=0.5, rely=0.4, anchor="center")
         
         # PARA EL CHEF, BARTENDER Y MESERO
-       # self.orden_bebida = tk.Button(self, text="Orden bebida", font=("Helvetica", 24), command=self.mostrar_menu, width=15)
-        #self.orden_bebida.place_forget()
+        self.orden_bebida = tk.Button(self, text="Orden bebida", font=("Helvetica", 24), command=self.mostrar_menu, width=15)
+        self.orden_bebida.place_forget()
         
         self.orden_comida = tk.Button(self, text="Orden Comida", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
         self.orden_comida.place_forget()

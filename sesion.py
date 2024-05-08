@@ -6,7 +6,7 @@ import requests
 def iniciar_sesion_cliente(nombre):
     # Realiza la lógica de inicio de sesión para el cliente con el nombre proporcionado
     data = {'nombre': nombre}
-    response = requests.post('http://192.168.0.17:5000/loginusuario', json=data)
+    response = requests.post('http://192.168.100.89:5000/loginusuario', json=data)
     
     # extraer los datos del return
     data = response.json()
@@ -26,7 +26,7 @@ def iniciar_sesion_cliente(nombre):
 def iniciar_sesion_otro(nombre, password, tipo_usuario):
     # Realiza la lógica de inicio de sesión para el chef con el nombre y contraseña proporcionados
     data = {'nombre': nombre, 'password': password, 'tipo_usuario': tipo_usuario}
-    response = requests.post('http://192.168.0.17:5000/loginotro', json=data)
+    response = requests.post('http://192.168.100.89:5000/loginotro', json=data)
 
     # extraer los datos del return
     data = response.json()
