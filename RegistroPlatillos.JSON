@@ -1,0 +1,43 @@
+{
+    "bebidas": {
+        "Coca-Cola": ["Con hielo", "Sin hielo", "Con limon"],
+        "Pepsi": ["Con hielo", "Sin hielo", "Con limon"],
+        "Fanta": ["Con hielo", "Sin hielo"],
+        "Sprit": ["Con hielo", "Sin hielo"],
+        "7 Up": ["Con hielo", "Sin hielo"],
+        "Jarritos": ["Con hielo", "Sin hielo"],
+        "Agua mineral": ["Con limon"],
+        "Limonada": ["Agua natural", "Agua mineral", "Con azucar", "Con stevia", "Con esplenda"],
+        "Te helado": ["Con hielo", "Sin hielo", "Con azucar", "Con stevia", "Con esplenda"],
+        "Agua de horchata": ["Con hielo", "Sin hielo", "Con canela"],
+        "Corona": ["Con limon", "Con sal", "Con clamato", "Con salsa inglesa", "Con salsa picante"],
+        "Modelo Especial": ["Con limon", "Con sal", "Con clamato", "Con salsa inglesa"],
+        "Heineken": ["Con limon", "Con sal"],
+        "Whisky": ["Con hielo", "Sin hielo", "Con agua"],
+        "Vodka": ["Con hielo", "Sin hielo", "Con limon", "Con agua tonica"],
+        "Tequila": ["Con sal", "Con limon", "Con sangrita"],
+        "Vino Tinto": ["Con hielo", "Sin hielo"],
+        "Vino Blanco": ["Con hielo", "Sin hielo", "Con soda"]
+    },
+    "platos_principales": {
+        "Sushi de salmon": ["Arroz", "Salmon fresco", "Alga nori", "Vinagre de arroz", "Salsa de soja", "Wasabi", "Jengibre encurtido"],
+        "Tempura de verduras": ["Verduras variadas", "Harina", "Huevo", "Agua con gas", "Salsa de soja", "Jengibre encurtido"],
+        "Ramen de pollo": ["Caldo de pollo", "Fideos ramen", "Pollo", "Huevo", "Cebolleta", "Brotes de bambu", "Setas shiitake"],
+        "Gyudon": ["Ternera", "Cebolla", "Salsa de soja", "Caldo dashi", "Azucar", "Jengibre", "Arroz"]
+    },
+    "platos_entradas": {
+        "Bruschetta": ["Pan baguette","Ajo","Albahaca fresca","Aceite de oliva virgen", "Vinagre balsamico","Sal y pimienta al gusto","Tomates maduros"],
+        "Ensalada Caprese": ["Tomates maduros","Mozzarella fresca","Hojas de albahaca fresca","Aceite de oliva virgen", "Vinagre balsamico","Sal y pimienta al gusto","Tomates maduros"],
+        "Queso fundido": ["Queso rallado: cheddar, mozzarella, mixto","Chorizo, champinones","Tortillas de maiz o chips de tortilla para servir"],
+        "Sashimi": ["Pescado fresco: salmon, atun, hamachi (pez limon), vieira","Wasabi","Salsa de soja"],
+        "Yakitori": ["Pollo","Salsa Yakitori","Sake o mirin","Salsa de soja","Azucar","Ajo","Jengibre rallado"],
+        "Nigiri sushi": ["Pescado","Arroz sushi","Wasabi","Salsa de soja","Azucar","Jengibre encurtido"]
+    },
+    "platos_postres": {
+        "Tarta de queso": ["Queso crema","Azucar","Huevos","Extracto de vainilla", "Galletas para la base","Mantequilla"],
+        "Coulant de chocolate": ["Chocolate negro","Azucar","Huevos","Mantequilla", "Harina"],
+        "Creme brulee": ["Crema de leche","Azucar","Yemas de huevo","Vainilla"],
+        "Dorayaki": ["Harina de trigo","Azucar","Miel","Huevos","Bicarbonato de sodio","Agua","Anko"],
+        "Mochi": ["Harina de arroz glutinoso","Azucar","Agua","Rellenos: fresa, mango, te verde"]
+    }
+}
