@@ -17,14 +17,34 @@ def iniciar_sesion_cliente(nombre):
     # Guardar id y nombre de usuario en usuario.json
     with open('usuario.json', 'w') as file:
         json.dump(data, file)
-        
-
+    
     if response.status_code == 200:
         # Si el inicio de sesión es exitoso, muestra un mensaje de éxito
         messagebox.showinfo("Inicio de Sesión", "¡Inicio de sesión exitoso!")
     else:
-        # Si el inicio de sesión falla, muestra un mensaje de error
-        messagebox.showerror("Inicio de Sesión", "Error al iniciar sesión.")
+        # Tratar de crear un nuevo usuario si el inicio de sesión falla
+        crear_usuario(nombre)
+        
+def crear_usuario(nombre):
+    # Realiza la lógica para crear un nuevo usuario con el nombre proporcionado
+    data = {'nombre': nombre}
+    # Usar IP para la dirección del servidor
+    response = requests.post(f'{IP}/crear_usuario', json=data)
+    
+    # extraer los datos del return
+    data = response.json()
+    data = {'nombre': data['nombre']}
+    # Guardar id y nombre de usuario en usuario.json
+    with open('usuario.json', 'w') as file:
+        json.dump(data, file)
+    
+    if response.status_code == 201:
+        # Si se crea el usuario, muestra un mensaje de éxito
+        messagebox.showinfo("Creación de Usuario", "¡Usuario creado con éxito!")
+    else:
+        # Si falla la creación del usuario, muestra un mensaje de error
+        messagebox.showerror("Creación de Usuario", "Error al crear el usuario.")
+    pass
 
 def iniciar_sesion_otro(nombre, password, tipo_usuario):
     # Realiza la lógica de inicio de sesión para el chef con el nombre y contraseña proporcionados

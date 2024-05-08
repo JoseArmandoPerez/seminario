@@ -3,18 +3,11 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import sesion  # Importa el módulo de inicio de sesión
 import json
-import time
-import requests
 from acerca import acerca_ventana
 from mesas import mesas_ventana
-
-
-def main():
-    # Llamar a la función para mostrar el menú antes de iniciar la aplicación principal
-    # mostrar_menu()
-
-    app = RestauranteApp()
-    app.mainloop()
+from menu_bebidas import abrir_ventana_pedidos as abrir_ventana_bebidas
+from menu_comida import abrir_ventana_pedidos as abrir_ventana_comidas
+from recomendaciones import recomendaciones_ventana
 
 class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
     def __init__(self):
@@ -25,6 +18,7 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         self.nombre_usuario = None
         self.id = 0
         self.tipo_usuario = None
+        self.sesion_iniciada = False
 
         try:
             self.bg_image = Image.open("imagenes/background_image.png")
@@ -38,10 +32,10 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         restaurant_label = tk.Label(self, text="Ramen & Roll", font=("Helvetica", 36, "bold"), fg="white", bg="black")
         restaurant_label.place(relx=0.5, rely=0.1, anchor="center")
         
-        self.orders_button2 = tk.Button(self, text="Menu Comida", font=("Helvetica", 24), command=self.open_menu_comidas, width=15)
+        self.orders_button2 = tk.Button(self, text="Menu Comida", font=("Helvetica", 24), bg='gray', command=self.open_menu_comidas, width=15)
         self.orders_button2.place(relx=0.5, rely=0.3, anchor="center")
         
-        self.orders_button = tk.Button(self, text="Menu Bebidas", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
+        self.orders_button = tk.Button(self, text="Menu Bebidas", font=("Helvetica", 24), bg='gray', command=self.open_menu_bebidas, width=15)
         self.orders_button.place(relx=0.5, rely=0.4, anchor="center")
         
         # PARA EL CHEF, BARTENDER Y MESERO
@@ -54,12 +48,12 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         # PARA EL DUEÑO
         self.estadistica = tk.Button(self, text="Estadísticas", font=("Helvetica", 24), command=self.open_menu_bebidas, width=15)
         self.estadistica.place_forget()
+        
+        self.tables_button = tk.Button(self, text="Mesas disponibles", font=("Helvetica", 24), bg='gray', command=self.open_tables_window, width=15)
+        self.tables_button.place(relx=0.5, rely=0.5, anchor="center")
 
         self.about_button = tk.Button(self, text="Acerca de nosotros", font=("Helvetica", 24), command=self.open_about_window, width=15)
-        self.about_button.place(relx=0.5, rely=0.5, anchor="center")
-
-        self.tables_button = tk.Button(self, text="Mesas disponibles", font=("Helvetica", 24), command=self.open_tables_window, width=15)
-        self.tables_button.place(relx=0.5, rely=0.6, anchor="center")
+        self.about_button.place(relx=0.5, rely=0.6, anchor="center")
 
         self.recommendations_button = tk.Button(self, text="Recomendaciones", font=("Helvetica", 24), command=self.open_recommendations_window, width=15)
         self.recommendations_button.place(relx=0.5, rely=0.7, anchor="center")
@@ -77,18 +71,28 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         acerca_ventana()
 
     def open_tables_window(self):
-        mesas_ventana()
+        if self.sesion_iniciada:
+            self.verificar_sesion()
+            mesas_ventana()
+        else:
+            messagebox.showinfo("Iniciar sesión", "Por favor inicie sesión para continuar.")
 
     def open_recommendations_window(self):
         recomendaciones_ventana()
         
     def open_menu_bebidas(self):
-        self.verificar_sesion()
-        abrir_ventana_pedidos()
-        
+        if self.sesion_iniciada:
+            self.verificar_sesion()
+            abrir_ventana_bebidas()
+        else:
+            messagebox.showinfo("Iniciar sesión", "Por favor inicie sesión para continuar.")
+            
     def open_menu_comidas(self):
-        self.verificar_sesion()
-        mostrar_menu()    
+        if self.sesion_iniciada:
+            self.verificar_sesion()
+            abrir_ventana_comidas()
+        else:
+            messagebox.showinfo("Iniciar sesión", "Por favor inicie sesión para continuar.")
         
     def close_all_windows(self):
         self.destroy()
@@ -108,10 +112,13 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
         self.orden_bebida.place_forget()
         self.orden_comida.place_forget()
         self.estadistica.place_forget()
+        self.orders_button2.config(bg='gray')
+        self.orders_button.config(bg='gray')
+        self.tables_button.config(bg='gray')
         self.orders_button.place(relx=0.5, rely=0.3, anchor="center")
         self.orders_button2.place(relx=0.5, rely=0.4, anchor="center")
-        self.about_button.place(relx=0.5, rely=0.5, anchor="center")
-        self.tables_button.place(relx=0.5, rely=0.6, anchor="center")
+        self.tables_button.place(relx=0.5, rely=0.5, anchor="center")
+        self.about_button.place(relx=0.5, rely=0.6, anchor="center")
         self.recommendations_button.place(relx=0.5, rely=0.7, anchor="center")
         with open('usuario.json', 'w') as file:
                 json.dump({}, file)
@@ -119,6 +126,9 @@ class RestauranteApp(tk.Tk):  # Hereda de tk.Tk
     def verificar_sesion(self):
         if self.sesion_iniciada:
             self.sign_out_button.config(text=f"Salir como {self.nombre_usuario}")
+            self.orders_button2.config(bg='white')
+            self.orders_button.config(bg='white')
+            self.tables_button.config(bg='white')
             self.sign_in_button.place_forget()
             self.sign_out_button.place(relx=0.8, rely=0.1, anchor="center")
             if self.tipo_usuario == "chef" or self.tipo_usuario == "mesero":

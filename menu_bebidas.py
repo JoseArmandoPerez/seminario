@@ -6,7 +6,7 @@ import qrcode
 import os
 
 # Dirección IP del servidor y ruta para obtener la lista de bebidas
-SERVER_URL = "http://172.16.119.180:5000"
+SERVER_URL = "http://192.168.100.89:5000"
 BEBIDAS_ENDPOINT = f"{SERVER_URL}/bebidas"
 
 text_carrito = None
@@ -173,5 +173,3 @@ def abrir_ventana_pedidos():
 
     ventana_pedidos.mainloop()
 
-# Llamada para abrir automáticamente la ventana de pedidos al ejecutar el programa
-abrir_ventana_pedidos()
